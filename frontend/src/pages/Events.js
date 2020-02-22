@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import Modal from "../components/Modal/Modal";
 import Backdrop from "../components/Backdrop/Backdrop";
+import AuthContext from "../context/auth-context";
 import "./Events.css";
 
 class EventsPage extends Component {
@@ -9,6 +10,8 @@ class EventsPage extends Component {
     creating: false,
     events: []
   };
+
+  static contextType = AuthContext;
 
   constructor(props) {
     super(props);
@@ -41,6 +44,7 @@ class EventsPage extends Component {
     ) {
       return;
     }
+
     const event = { title, price, date, description };
     console.log(event);
 
@@ -79,7 +83,7 @@ class EventsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log(resData);
+        this.fetchEvents();
       })
       .catch(err => {
         console.log(err);
@@ -90,7 +94,7 @@ class EventsPage extends Component {
     this.setState({ creating: false });
   };
 
-  fetchEvents = () => {
+  fetchEvents() {
     const requestBody = {
       query: `
           query {
@@ -108,8 +112,6 @@ class EventsPage extends Component {
           }
         `
     };
-
-    const token = this.context.token;
 
     fetch("http://localhost:8000/graphql", {
       method: "POST",
@@ -131,7 +133,7 @@ class EventsPage extends Component {
       .catch(err => {
         console.log(err);
       });
-  };
+  }
 
   render() {
     const eventList = this.state.events.map(event => {
@@ -156,19 +158,15 @@ class EventsPage extends Component {
             <form>
               <div className="form-control">
                 <label htmlFor="title">Title</label>
-                <input type="text" id="title" ref={this.titleElRef}></input>
+                <input type="text" id="title" ref={this.titleElRef} />
               </div>
               <div className="form-control">
                 <label htmlFor="price">Price</label>
-                <input type="number" id="price" ref={this.priceElRef}></input>
+                <input type="number" id="price" ref={this.priceElRef} />
               </div>
               <div className="form-control">
                 <label htmlFor="date">Date</label>
-                <input
-                  type="datetime-local"
-                  id="date"
-                  ref={this.dateElRef}
-                ></input>
+                <input type="datetime-local" id="date" ref={this.dateElRef} />
               </div>
               <div className="form-control">
                 <label htmlFor="description">Description</label>
