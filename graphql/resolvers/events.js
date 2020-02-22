@@ -1,4 +1,5 @@
 const Event = require("../../models/event");
+const User = require("../../models/user");
 
 const { transformEvent } = require("./merge");
 
@@ -14,8 +15,8 @@ module.exports = {
     }
   },
   createEvent: async (args, req) => {
-    if (req.isAuth) {
-      throw new Error("Unauthicated!");
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
     }
     const event = new Event({
       title: args.eventInput.title,
