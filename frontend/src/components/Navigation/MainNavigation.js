@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 import AuthContext from "../../context/auth-context";
-import "./Navigation/MainNavigation.css";
+import "./MainNavigation.css";
 
 const mainNavigation = props => (
   <AuthContext.Consumer>
@@ -14,13 +14,13 @@ const mainNavigation = props => (
           </div>
           <nav className="main-navigation__items">
             <ul>
-              {context.token && (
+              {!context.token && (
                 <li>
                   <NavLink to="/auth">Authenticate</NavLink>
                 </li>
               )}
               <li>
-                <NavLink to="/events">Event</NavLink>
+                <NavLink to="/events">Events</NavLink>
               </li>
               {context.token && (
                 <React.Fragment>
