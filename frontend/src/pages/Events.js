@@ -61,10 +61,6 @@ class EventsPage extends Component {
               description
               date
               price
-              creator {
-                _id
-                email
-              }
             }
           }
         `
@@ -90,7 +86,7 @@ class EventsPage extends Component {
         this.setState(prevState => {
           const updatedEvents = [...prevState.events];
           updatedEvents.push({
-            _id: this.context.userId,
+            _id: resData.data.createEvent._id,
             title: resData.data.createEvent.title,
             description: resData.data.createEvent.description,
             date: resData.data.createEvent.date,
@@ -202,7 +198,7 @@ class EventsPage extends Component {
         )}
         {this.state.selectedEvent && (
           <Modal
-            title="Add Event"
+            title={this.state.selectedEvent.title}
             canCancel
             canConfirm
             onCancel={this.modalCancelHandler}
@@ -211,7 +207,7 @@ class EventsPage extends Component {
           >
             <h1>{this.state.selectedEvent.title}</h1>
             <h2>
-              {this.state.selectedEvent.price} € -{" "}
+              ${this.state.selectedEvent.price} -{" "}
               {new Date(this.state.selectedEvent.date).toLocaleDateString()}
             </h2>
             <p>{this.state.selectedEvent.description}</p>

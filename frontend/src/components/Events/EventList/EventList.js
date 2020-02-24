@@ -1,7 +1,6 @@
 import React from "react";
 
 import EventItem from "./EventItem/EventItem";
-
 import "./EventList.css";
 
 const eventList = props => {
@@ -9,7 +8,7 @@ const eventList = props => {
     return (
       <EventItem
         key={event._id}
-        eventId={event.id}
+        eventId={event._id}
         title={event.title}
         price={event.price}
         date={event.date}
