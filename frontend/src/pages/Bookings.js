@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+import Spinner from "../components/Spinner/Spinner";
 import AuthContext from "../context/auth-context";
 
 class BookingsPage extends Component {
@@ -21,11 +22,12 @@ class BookingsPage extends Component {
           query {
             bookings {
               _id
-              event {
-                _id
-                title
-                date
-              }
+             createdAt
+             event {
+               _id
+               title
+               date
+             }
             }
           }
         `
@@ -46,7 +48,7 @@ class BookingsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const events = resData.data.bookings;
+        const bookings = resData.data.bookings;
         this.setState({ bookings: bookings, isLoading: false });
       })
       .catch(err => {
@@ -57,14 +59,20 @@ class BookingsPage extends Component {
 
   render() {
     return (
-      <ul>
-        {this.state.bookings.map(booking => (
-          <li key={booking._id}>
-            {booking.event.title} -{" "}
-            {new Date(booking.event.createdAt).toLocaleDateString()}
-          </li>
-        ))}
-      </ul>
+      <React.Fragment>
+        {this.state.isLoading ? (
+          <Spinner />
+        ) : (
+          <ul>
+            {this.state.bookings.map(booking => (
+              <li key={booking._id}>
+                {booking.event.title} -{" "}
+                {new Date(booking.createdAt).toLocaleDateString()}
+              </li>
+            ))}
+          </ul>
+        )}
+      </React.Fragment>
     );
   }
 }
